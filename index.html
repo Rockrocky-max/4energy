@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>順流致富測驗表</title>
+  <style>
+    body { font-family: sans-serif; background-color: #fff8ee; padding: 20px; }
+    h1 { color: #333; }
+    .question { margin-bottom: 20px; }
+    .options label { display: block; margin: 5px 0; }
+    .result { margin-top: 30px; font-size: 18px; font-weight: bold; white-space: pre-line; }
+    button { padding: 10px 20px; font-size: 16px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>順流致富測驗表</h1>
+  <form id="quizForm">
+    <div id="questions"></div>
+    <button type="button" onclick="calculateResult()">計算結果</button>
+  </form>
+  <div class="result" id="result"></div>
+
+  <script>
+    const quizData = [
+      ["獲利投報是我的第一考量", "我喜歡簡單的投資", "服務他人讓我感到滿足", "我寧願不賺錢也不要賠錢"],
+      ["新奇好玩有創意的事總能引起我的注意", "我更重視是誰跟我分享，商品內容其次", "我做事講求公平", "關於投資我會收集資料並仔細學習"],
+      ["看到創意成真讓我喜悅滿足", "我喜歡能與人互動的環境", "找到划算的交易對我來講是簡單的", "我能適應安靜獨處的環境"],
+      ["我不喜歡重複的事情", "開朗外向適合描述我的個性", "我對時機有一定的敏感度", "我喜歡整理細節"],
+      ["我寧願賠錢也不願沒賺到", "結交新朋友會讓我感到開心", "我喜歡分析與比較不同的東西", "不喜歡不確定、混亂的事情發生"],
+      ["我喜歡不斷改變的生活型態", "我樂於參與人多的聚會", "直接運用現有資源比創新創造更容易", "我做事總是力求完美"],
+      ["我總是有天馬行空的想法", "對別人描述願景特別有感覺", "我是一個刻苦耐勞的人", "我不喜歡社交活動"],
+      ["比起投資工具商業模式更吸引我", "我的數字邏輯概念不是很好", "創意思考對我來說是困難的", "上台演說比死亡還可怕"],
+      ["我喜歡冒險", "大部分的人會覺得我很發散不聚焦", "在商業上總是以賺錢為優先考量", "我喜歡穩定的生活"],
+      ["我的思考模式非常跳躍", "吃飯時即使整桌不認識，也能與他人熟絡", "做事情喜歡先計畫好再執行", "身邊的人總說我非常理性"]
+    ];
+
+    const questionsDiv = document.getElementById("questions");
+
+    quizData.forEach((choices, index) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "question";
+      qDiv.innerHTML = `<p><strong>${index + 1}. </strong></p>`;
+      choices.forEach((choice, i) => {
+        const letter = String.fromCharCode(65 + i);
+        qDiv.innerHTML += `
+          <div class="options">
+            <label>
+              <input type="radio" name="q${index}" value="${letter}">
+              ${letter}. ${choice}
+            </label>
+          </div>
+        `;
+      });
+      questionsDiv.appendChild(qDiv);
+    });
+
+    function calculateResult() {
+      const result = { A: 0, B: 0, C: 0, D: 0 };
+      let allAnswered = true;
+
+      for (let i = 0; i < quizData.length; i++) {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (!selected) {
+          allAnswered = false;
+          break;
+        }
+        result[selected.value]++;
+      }
+
+      if (!allAnswered) {
+        document.getElementById("result").innerText = "請回答所有問題後再提交。";
+        return;
+      }
+
+      document.getElementById("result").innerText = `A: ${result.A} 個\nB: ${result.B} 個\nC: ${result.C} 個\nD: ${result.D} 個`;
+    }
+  </script>
+</body>
+</html>
